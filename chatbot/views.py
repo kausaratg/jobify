@@ -7,6 +7,7 @@ from django.contrib.auth.models import User
 from .models import Chat
 
 from django.utils import timezone
+import re
 
 gemini_apikey= "AIzaSyAgLVpWzWKiNWKcqo1ADNzrLwtaGSbxZJ0"
 
@@ -15,7 +16,21 @@ def ask_geminiAi(message):
     genai.configure(api_key = gemini_apikey)
     model = genai.GenerativeModel("gemini-1.5-flash", system_instruction="You are Jobify, You help people with searching for job")
     response = model.generate_content (message)
-    return response.text
+    response = re.sub(r"(\*\*|\*)", "", response.text)
+    
+    # Add line breaks after punctuation marks (., !, ?, ;)
+    response = re.sub(r"([!:?;]) ", r"\1<br>", response)
+    
+    # Remove extra spaces
+    response = re.sub(r"\s+", " ", response).strip()
+    
+    # Ensure line breaks are spaced appropriately
+    response_lines = response.split("<br>")
+    formatted_response = "<br>".join(line.strip() for line in response_lines if line.strip())
+    
+    return formatted_response
+ 
+
 
 
 def chatbot(request):
@@ -23,10 +38,11 @@ def chatbot(request):
     if request.method == "POST":
         message = request.POST.get('message')
         response = ask_geminiAi(message)
-
+       
         chat = Chat (user = request.user, message = message, response = response, created_at = timezone.now()
         )
         chat.save()
+
         return JsonResponse({'message':message, 'response': response})
     return render(request, "chatbot.html", {'chats':chats})
 
