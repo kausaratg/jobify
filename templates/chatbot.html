@@ -4,7 +4,7 @@
 <style>
     body, html {
       height: 100%;
-      background-color: rgb(213, 230, 252);
+
     }
 
     .messages-box {
@@ -27,13 +27,13 @@
     }
 
     .sent {
-      background-color:rgb(149, 185, 233);
-      align-self: flex-end;
+      background-color:rgb(83, 151, 240);
+      {% comment %} align-self: flex-end; {% endcomment %}
       
     }
 
     .received {
-      background-color:rgb(206, 206, 214);
+      background-color:rgb(81, 81, 88);
       align-self: flex-start;
     }
 
@@ -72,22 +72,23 @@
 
 
 {% block content %}
-<div class="chat-container">
-  <div class="card ">
-    <div class="card-header bg-info-emphasis row d-flex justify-content-between sticky-top ">
-    <h1> Jobify</h1>
+<div class="chat-container text-white  ">
+  <div class="card bg-dark">
+    <div class="card-header bg-secondary row d-flex justify-content-around sticky-top ">
+    <h1><a href ="/" style="color: white">Jobify</a> </h1>
     {% if user.is_authenticated %}
-    <h1><b>Welcome, {{user.username}}</b> <button type="button" class="btn btn-info"><a style="color: white;" href="logout">Logout</a></button></h1>
+    <h3><b>Welcome, {{user.username}}</b> </h3>
+    <h1><button type="button" class="btn btn-info"><a style="color: white;" href="logout">Logout</a></button></h1>
     {% else %}
    <h1><a style="color: yellow" href="login">Login</a>   <a style="color: yellow;" href="register">Register</a></h1>
    {% endif %}
    </div>
     
-    <div class="card-body messages-box">
+    <div class="card-body messages-box  ">
       
-      <ul class="list-unstyled messages-list">
+      <ul class="list-unstyled messages-list  ">
         
-        <li class="message received border rounded">
+        <li class="message received border rounded-5 col-md-6">
           <div class="message-text ">
             <div class="message-sender">
               <b>Jobify AI</b>
@@ -101,19 +102,20 @@
 
         {% for chat in chats %}
           {% if chat.user == request.user %}
-
-          <li class="message sent border rounded">
-          <div class="message-text">
-            <div class="message-sender">
-              <b>You</b>
+          <div class="d-flex">
+            <li class="message sent border rounded col-md-6 ml-auto">
+            <div class="message-text  ">
+              <div class="message-sender">
+                <b>You</b>
+              </div>
+              <div class="message-content">
+                {{chat.message}}
+              </div>
             </div>
-            <div class="message-content">
-              {{chat.message}}
-            </div>
-          </div>
-        </li>
-
-        <li class="message received border rounded p-2">
+          </li>
+        </div>
+        <li class="message received border rounded col-md-6">
+        <li class="message received border rounded p-2 col-md-6">
           <div class="message-text">
             <div class="message-sender">
               <b>Jobify AI</b>
@@ -133,13 +135,13 @@
     <br><br>
     <br><br>
     <br><br>
-  </div>
-  <form class="message-form">
+  </div> 
+  <form class="message-form  align-items-center ">
     {%csrf_token%}
-    <div class="input-group ">
-      <input type="text" class="form-control message-input" placeholder="Type your message...">
+    <div class="input-group  ">
+      <input type="text" class="form-control message-input bg.dark" placeholder="Type your message...">
       <div class="input-group-append">
-        <button type="submit" class="btn btn-outline-secondary btn-send">Send</button>
+        <button type="submit" class="btn btn-outline-primary btn-send">Send</button>
       </div>
     </div>
   </form>
@@ -165,7 +167,7 @@
     }
 
     const messageItem = document.createElement('li');
-    messageItem.classList.add('message', 'sent');
+    messageItem.classList.add('message', 'sent', 'col-md-6', 'ml-auto');
     messageItem.innerHTML = `
         <div class="message-text">
             <div class="message-sender">
@@ -191,7 +193,7 @@
       .then(data => {
         const response = data.response;
         const messageItem = document.createElement('li');
-        messageItem.classList.add('message', 'received');
+        messageItem.classList.add('message', 'received', 'col-md-6');
         messageItem.innerHTML = `
         <div class="message-text">
             <div class="message-sender">

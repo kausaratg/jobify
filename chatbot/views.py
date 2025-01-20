@@ -5,11 +5,16 @@ import google.generativeai as genai
 from django.contrib import auth
 from django.contrib.auth.models import User
 from .models import Chat
+from django.contrib.auth.decorators import login_required
 
 from django.utils import timezone
 import re
 
 gemini_apikey= "AIzaSyAgLVpWzWKiNWKcqo1ADNzrLwtaGSbxZJ0"
+
+
+def home(request):
+    return render(request, 'index.html')
 
 # Create your views here.
 def ask_geminiAi(message):
@@ -32,7 +37,7 @@ def ask_geminiAi(message):
  
 
 
-
+@login_required(login_url='login')
 def chatbot(request):
     chats = Chat.objects.filter(user = request.user)
     if request.method == "POST":
