@@ -9,6 +9,8 @@ from django.contrib.auth.decorators import login_required
 
 from django.utils import timezone
 import re
+import markdown
+import textwrap
 
 gemini_apikey= "AIzaSyAgLVpWzWKiNWKcqo1ADNzrLwtaGSbxZJ0"
 
@@ -16,25 +18,23 @@ gemini_apikey= "AIzaSyAgLVpWzWKiNWKcqo1ADNzrLwtaGSbxZJ0"
 def home(request):
     return render(request, 'index.html')
 
+
+def to_markdown(text):
+  text = text.replace('•', '  *')
+  return markdown.markdown(textwrap.indent(text, '> ', predicate=lambda _: True))
+
+
 # Create your views here.
 def ask_geminiAi(message):
     genai.configure(api_key = gemini_apikey)
     model = genai.GenerativeModel("gemini-1.5-flash", system_instruction="You are Jobify, You help people with searching for job")
     response = model.generate_content (message)
-    response = re.sub(r"(\*\*|\*)", "", response.text)
-    
-    # Add line breaks after punctuation marks (., !, ?, ;)
-    response = re.sub(r"([!:?;]) ", r"\1<br>", response)
-    
-    # Remove extra spaces
-    response = re.sub(r"\s+", " ", response).strip()
-    
-    # Ensure line breaks are spaced appropriately
-    response_lines = response.split("<br>")
-    formatted_response = "<br>".join(line.strip() for line in response_lines if line.strip())
-    
-    return formatted_response
- 
+  
+    # response_data = {
+    #         "text": response.text,  # Assuming response.text contains the relevant response data
+    #         # Add other relevant data from response if needed
+    #     }
+    return to_markdown(response.text)
 
 
 @login_required(login_url='login')
