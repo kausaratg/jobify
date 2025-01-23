@@ -11,6 +11,10 @@ from django.utils import timezone
 import re
 import markdown
 import textwrap
+from chatbot.forms import UploadFileForm
+from PyPDF2 import PdfReader
+
+
 
 gemini_apikey= "AIzaSyAgLVpWzWKiNWKcqo1ADNzrLwtaGSbxZJ0"
 
@@ -30,10 +34,7 @@ def ask_geminiAi(message):
     model = genai.GenerativeModel("gemini-1.5-flash", system_instruction="You are Jobify, You help people with searching for job")
     response = model.generate_content (message)
   
-    # response_data = {
-    #         "text": response.text,  # Assuming response.text contains the relevant response data
-    #         # Add other relevant data from response if needed
-    #     }
+
     return to_markdown(response.text)
 
 
@@ -90,3 +91,27 @@ def register(request):
 def logout(request):
     auth.logout(request)
     return redirect('login')
+
+
+def analyse_cv(request):
+    uploadform = UploadFileForm()
+    if request.method == 'POST':
+        resume = UploadFileForm(request.POST, request.FILES)
+                # Get the uploaded file
+        pdf_file = request.FILES['resume']
+        print (pdf_file)
+        pdf_reader = PdfReader(pdf_file)
+        
+        extracted_text = " "
+        for page in pdf_reader.pages:
+            extracted_text += page.extract_text()
+
+        genai.configure(api_key = gemini_apikey)
+        model = genai.GenerativeModel("gemini-1.5-flash", system_instruction="You are Jobify, You help people with searching for job")
+        response = model.generate_content (f"please analyze this text {extracted_text}")
+        print(response)
+        edited_response =  to_markdown(response.text)
+        return render(request, 'resume_analysis_result.html', {"edited_response": edited_response})
+    else:
+        context = {"file_form": UploadFileForm()}
+        return render(request, "cv_analyser.html", context)
