@@ -75,7 +75,7 @@
     <h2><a href ="/" style="color: white">Jobify</a> </h2>
     {% if user.is_authenticated %}
     <h3><b>Welcome, {{user.username}}</b> </h3>
-    <h1><button type="button" class="btn btn-info"><a style="color: white;" href="logout">Logout</a></button></h1>
+    <h1><button type="button" class="btn btn-secondary"><a style="color: white;" href="logout">Logout</a></button></h1>
     {% else %}
    <h1><a style="color: yellow" href="login">Login</a>   <a style="color: yellow;" href="register">Register</a></h1>
    {% endif %}
