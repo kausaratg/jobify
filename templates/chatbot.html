@@ -4,6 +4,8 @@
 <style>
     body, html {
       height: 100%;
+      font-family: sans-serif;
+      background-color: black;
 
     }
 
@@ -27,14 +29,16 @@
     }
 
     .sent {
-      background-color:rgb(83, 151, 240);
-      {% comment %} align-self: flex-end; {% endcomment %}
+      
+      background-color:rgb(81, 81, 88);
+      border-radius: 0px 15px 15px 15px;
       
     }
 
     .received {
-      background-color:rgb(81, 81, 88);
+      background-color:black;
       align-self: flex-start;
+      border-radius: 15px 0px 15px 15px;
     }
 
     .message-form {
@@ -44,38 +48,31 @@
       left: 0;
       right: 0;
       padding: 10px;
-      background-color: #f8f9fa;
+    ;
     }
 
     .message-input {
       flex: 1;
-      border-radius: 0;
+    
       border-right: none;
     }
 
-    .btn-send {
-      border-radius: 0;
-    }
-
+ 
     .chat-container {
       height: 100%;
       display: flex;
       flex-direction: column;
     }
-    .card-header {
 
-
-
-}
   </style>
 {% endblock %}
 
 
 {% block content %}
-<div class="chat-container text-white  ">
-  <div class="card bg-dark">
-    <div class="card-header bg-secondary row d-flex justify-content-around sticky-top ">
-    <h1><a href ="/" style="color: white">Jobify</a> </h1>
+<div class="chat-container text-white"  >
+  <div class="card m-3" style="background-color: black">
+    <div class="card-header   row d-flex justify-content-around sticky-top ">
+    <h2><a href ="/" style="color: white">Jobify</a> </h2>
     {% if user.is_authenticated %}
     <h3><b>Welcome, {{user.username}}</b> </h3>
     <h1><button type="button" class="btn btn-info"><a style="color: white;" href="logout">Logout</a></button></h1>
@@ -88,7 +85,7 @@
       
       <ul class="list-unstyled messages-list  ">
         
-        <li class="message received border rounded-lg col-md-6">
+        <li class="message received border r col-md-6">
           <div class="message-text ">
             <div class="message-sender">
               <b>Jobify AI</b>
@@ -103,7 +100,7 @@
         {% for chat in chats %}
           {% if chat.user == request.user %}
           <div class="d-flex">
-            <li class="message sent border rounded col-md-6 ml-auto">
+            <li class="message sent border  col-md-6 ml-auto">
             <div class="message-text  ">
               <div class="message-sender">
                 <b>You</b>
@@ -114,8 +111,8 @@
             </div>
           </li>
         </div>
-        <li class="message received border rounded-lg col-md-6">
-        <li class="message received border rounded-lg p-2 col-md-6">
+        <li class="message received border  col-md-6">
+        <li class="message received border  p-2 col-md-6">
           <div class="message-text">
             <div class="message-sender">
               <b>Jobify AI</b>
@@ -130,21 +127,21 @@
         {% endfor %}
         
       </ul>
-      
+      <form class="message-form  align-items-center ml-5 mr-5 ">
+        {%csrf_token%}
+        <div class="input-group  ">
+          <input type="text" class="form-control message-input bg.dark" placeholder="Type your message...">
+          <div class="input-group-append">
+            <button type="submit" class="btn btn-outline-primary btn-send">Send</button>
+          </div>
+        </div>
+      </form>
     </div>
     <br><br>
     <br><br>
     <br><br>
   </div> 
-  <form class="message-form  align-items-center ">
-    {%csrf_token%}
-    <div class="input-group  ">
-      <input type="text" class="form-control message-input bg.dark" placeholder="Type your message...">
-      <div class="input-group-append">
-        <button type="submit" class="btn btn-outline-primary btn-send">Send</button>
-      </div>
-    </div>
-  </form>
+ 
 </div>
 
 
@@ -193,7 +190,7 @@
       .then(data => {
         const response = data.response;
         const messageItem = document.createElement('li');
-        messageItem.classList.add('message', 'received', 'col-md-6');
+        messageItem.classList.add('message', 'received', 'col-md-6', "border");
         messageItem.innerHTML = `
         <div class="message-text">
             <div class="message-sender">
