@@ -89,4 +89,4 @@ python manage.py runserver
 ### Analyze your CV
 ![Screenshot 2025-01-24 131156](https://github.com/user-attachments/assets/97d94578-b2e1-4c9b-8913-ce4e396365eb)
 
-### Built with 🤍 Jobify by <a href="">Kausarat Giwa</a>
+### Built with 🤍 Jobify by <a href="https://jobify1ai.pythonanywhere.com/">Kausarat Giwa</a>
