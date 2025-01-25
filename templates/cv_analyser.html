@@ -34,7 +34,7 @@
 	left: 50%;
 	transform: translate(-50%, -50%);
 	width: 300px;
-	height: 260px;
+	height: 300px;
 	border-radius: 3px;
 	box-shadow: 8px 10px 15px 0 rgba(0, 0, 0, 0.2);
 	background: #fff;
@@ -59,7 +59,7 @@ h1 {
 
 .dropzone {
 	width: 100px;
-	height: 80px;
+	height: 100px;
 	border: 1px dashed #999;
 	border-radius: 3px;
 	text-align: center;
@@ -92,7 +92,9 @@ h1 {
 }
 
 .btn:hover {
-	background: rebeccapurple;
+	background: white;
+	border: 3px solid black;
+	color: black;
 	box-shadow: 0 3px 0 0 blue;
 }
 
@@ -135,11 +137,12 @@ h1 {
 			<form method="POST" enctype="multipart/form-data" class="upload-icon">
 			    {% csrf_token %}
 			   {{file_form}}
+			   <button type="submit" class="btn mt-4 mr-5" name="uploadbutton">Analyze</button>
 			</form>
 
 		</div>
 
-		<button type="submit" class="btn" name="uploadbutton">Analyze</button>
+		
 
 	</div>
 </div>
